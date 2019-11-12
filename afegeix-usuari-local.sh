@@ -1,15 +1,20 @@
 #!/bin/bash
-
+#comprobación usuario es root
 if [[ "${UID}" -eq 0 ]]
 then
-	read -p 'Enter the username to create: ' USER_NAME
-	read -p 'Enter the name of the person who this account is for: ' COMMENT
-	read -p 'Enter the password to use for the account: ' PASSWORD
-	useradd -c "${COMMENT}" -m ${USER_NAME}
-	echo ${PASSWORD} | passwd --stdin ${USER_NAME}
+    #introducir nombre de usuario
+	read -p 'Introduce el nombre del nuevo usuario ' USER_NAME
+    #introducir el nombre de la persona
+	read -p 'Introduce el nombre del usuario que va a utilizar esta cuenta ' NAME
+    #introducir la password del usuario
+	read -p 'Introduce la contraseña: ' PASSWORD
+    #ejecuccion del comando para introducir el nuevo usuario
+	useradd -c "${NAME}" -m ${USER_NAME}
+    #cambia la contraseña del usuario
+	echo ${USER_NAME}":"${PASSWORD} | chpasswd 
+    #obliga al usuario a cambiar la contraseña en el primer login
 	passwd -e ${USER_NAME}
 else
-	echo 'You are not root'
+	echo 'No tienes privilegios de root'
 	exit 1
 fi
-
