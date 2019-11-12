@@ -14,7 +14,18 @@ then
 	echo ${USER_NAME}":"${PASSWORD} | chpasswd 
     #obliga al usuario a cambiar la contraseña en el primer login
 	passwd -e ${USER_NAME}
+    #comprobacio de la creacion del usuario
+    if grep $USER_NAME /etc/passwd > /dev/null2>&1
+    then
+    #el usuario se ha creado satisfactoriamente
+        echo 'El usuario ha sido correctamente creado'
+    else
+    #el usuario no se ha creado
+        echo 'El proceso de creacion ha fallado'
+        exit 1
+    fi
 else
+    #el usuario no tiene privilegios
 	echo 'No tienes privilegios de root'
 	exit 1
 fi
